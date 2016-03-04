@@ -14,13 +14,12 @@ ENV DEBIAN_FRONTEND noninteractive
 # Update base image
 # Add sources for latest nginx
 # Install software requirements
-RUN apt-get update && \
-apt-get install -y software-properties-common && \
+RUN apt-get install -y software-properties-common && \
 nginx=stable && \
 add-apt-repository ppa:nginx/$nginx && \
 apt-get update && \
 apt-get upgrade -y && \
-BUILD_PACKAGES="nginx php5-fpm php5-cli php5-mysql php5-curl php5-intl" && \
+BUILD_PACKAGES="unzip nginx php5-fpm php5-cli php5-mysql php5-curl php5-intl" && \
 apt-get -y install $BUILD_PACKAGES && \
 apt-get remove --purge -y software-properties-common && \
 apt-get autoremove -y && \
@@ -30,6 +29,12 @@ echo -n > /var/lib/apt/extended_states && \
 rm -rf /var/lib/apt/lists/* && \
 rm -rf /usr/share/man/?? && \
 rm -rf /usr/share/man/??_*
+
+# install aws cli
+ADD https://s3.amazonaws.com/aws-cli/awscli-bundle.zip /tmp/awscli-bundle.zip
+RUN unzip /tmp/awscli-bundle.zip -d /tmp/ && \
+/tmp/awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws && \
+rm -rf /tmp/awscli-bundle.zip /tmp/awscli-bundle
 
 # tweak nginx config
 RUN sed -i -e"s/worker_processes  1/worker_processes 5/" /etc/nginx/nginx.conf && \
