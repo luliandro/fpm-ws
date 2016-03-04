@@ -1,5 +1,5 @@
 FROM phusion/baseimage:0.9.18
-MAINTAINER Ric Harvey <chris@hevnly.com>
+MAINTAINER Chris Knight <chris@hevnly.com>
 
 # Update the OS
 RUN apt-get update && apt-get upgrade -y -o Dpkg::Options::="--force-confold"
