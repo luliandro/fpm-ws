@@ -61,9 +61,10 @@ RUN sed -i -e "s/;listen.mode = 0660/listen.mode = 0750/g" /etc/php5/fpm/pool.d/
 RUN rm -Rf /etc/nginx/conf.d/* && \
 rm -Rf /etc/nginx/sites-available/default
 ADD conf/nginx-site.conf /etc/nginx/sites-available/default.conf
+ADD conf/timed-combined.conf /etc/nginx/conf.d/timed-combined.conf
 RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
 
-# create startuo script
+# create startup script
 RUN mkdir /etc/service/nginx
 ADD scripts/nginx_start.sh /etc/service/nginx/run
 
