@@ -14,21 +14,24 @@ ENV DEBIAN_FRONTEND noninteractive
 # Update base image
 # Add sources for latest nginx
 # Install software requirements
-RUN apt-get install -y software-properties-common && \
-nginx=stable && \
-add-apt-repository ppa:nginx/$nginx && \
-apt-get update && \
-apt-get upgrade -y && \
-BUILD_PACKAGES="unzip nginx php5-fpm php5-cli php5-mysql php5-curl php5-intl" && \
-apt-get -y install $BUILD_PACKAGES && \
-apt-get remove --purge -y software-properties-common && \
-apt-get autoremove -y && \
-apt-get clean && \
-apt-get autoclean && \
-echo -n > /var/lib/apt/extended_states && \
-rm -rf /var/lib/apt/lists/* && \
-rm -rf /usr/share/man/?? && \
-rm -rf /usr/share/man/??_*
+RUN apt-get install -y software-properties-common
+RUN nginx=stable && \
+add-apt-repository ppa:nginx/$nginx
+RUN add-apt-repository ppa:ondrej/php5-5.6
+RUN apt-get update
+RUN apt-get upgrade -y --force-yes
+RUN BUILD_PACKAGES="unzip nginx php5-fpm php5-cli php5-mysql php5-curl php5-intl" && \
+apt-get -y --force-yes install $BUILD_PACKAGES
+RUN apt-get remove --purge -y software-properties-common
+RUN apt-get autoremove -y
+RUN apt-get clean
+RUN apt-get autoclean
+RUN echo -n > /var/lib/apt/extended_states
+RUN rm -rf /var/lib/apt/lists/*
+RUN rm -rf /usr/share/man/??
+RUN rm -rf /usr/share/man/??_*
+
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
 # install aws cli
 ADD https://s3.amazonaws.com/aws-cli/awscli-bundle.zip /tmp/awscli-bundle.zip
@@ -46,6 +49,7 @@ echo "daemon off;" >> /etc/nginx/nginx.conf
 RUN sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini && \
 sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php5/fpm/php.ini && \
 sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 100M/g" /etc/php5/fpm/php.ini && \
+sed -i -e "s/memory_limit\s*=\s*128M/memory_limit = 256M/g" /etc/php5/fpm/php.ini && \
 sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php5/fpm/php-fpm.conf && \
 sed -i -e "s/;catch_workers_output\s*=\s*yes/catch_workers_output = yes/g" /etc/php5/fpm/pool.d/www.conf && \
 sed -i -e "s/pm.max_children = 5/pm.max_children = 9/g" /etc/php5/fpm/pool.d/www.conf && \
