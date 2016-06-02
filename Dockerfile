@@ -20,7 +20,7 @@ add-apt-repository ppa:nginx/$nginx
 RUN add-apt-repository ppa:ondrej/php
 RUN apt-get update
 RUN apt-get upgrade -y --force-yes
-RUN BUILD_PACKAGES="unzip nginx php5.6-fpm php5.6-cli php5.6-mysql php5.6-curl php5.6-intl" && \
+RUN BUILD_PACKAGES="unzip nginx php5.6-fpm php5.6-cli php5.6-mysql php5.6-curl php5.6-intl php5.6-xml" && \
 apt-get -y --force-yes install $BUILD_PACKAGES
 RUN apt-get remove --purge -y software-properties-common
 RUN apt-get autoremove -y
