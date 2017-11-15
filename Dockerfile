@@ -49,7 +49,7 @@ echo "daemon off;" >> /etc/nginx/nginx.conf
 RUN sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php/5.6/fpm/php.ini && \
 sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php/5.6/fpm/php.ini && \
 sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 100M/g" /etc/php/5.6/fpm/php.ini && \
-sed -i -e "s/memory_limit\s*=\s*128M/memory_limit = 256M/g" /etc/php/5.6/fpm/php.ini && \
+sed -i -e "s/memory_limit\s*=\s*128M/memory_limit = 512M/g" /etc/php/5.6/fpm/php.ini && \
 sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php/5.6/fpm/php-fpm.conf && \
 sed -i -e "s/;catch_workers_output\s*=\s*yes/catch_workers_output = yes/g" /etc/php/5.6/fpm/pool.d/www.conf && \
 sed -i -e "s/pm.max_children = 5/pm.max_children = 9/g" /etc/php/5.6/fpm/pool.d/www.conf && \
